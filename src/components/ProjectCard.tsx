@@ -2,7 +2,6 @@ import React from 'react';
 import { Project } from '../types';
 import { ProjectMockup } from './ProjectMockup';
 import { ArrowRight } from 'lucide-react';
-import { motion } from 'framer-motion';
 
 interface ProjectCardProps {
   project: Project;
@@ -13,11 +12,9 @@ interface ProjectCardProps {
 
 export function ProjectCard({ project, onDetailClick, onHover }: ProjectCardProps) {
   return (
-    <motion.div
+    <div
       onMouseEnter={onHover}
-      whileHover={{ y: -6 }}
-      transition={{ duration: 0.25, ease: "easeOut" }}
-      className="group bg-white rounded-[8px] border border-[#E5E7EB] hover:border-[#64748B] shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_32px_rgba(2,8,23,0.1)] transition-all duration-300 flex flex-col overflow-hidden h-full"
+      className="group bg-white rounded-[8px] border border-[#E5E7EB] hover:border-[#64748B] shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_32px_rgba(2,8,23,0.1)] transition-all duration-300 flex flex-col overflow-hidden h-full hover:-translate-y-1.5"
     >
       {/* Visual Mockup Banner Container */}
       <div className="relative aspect-video w-full h-[220px] overflow-hidden border-b border-[#E5E7EB]">
@@ -36,7 +33,7 @@ export function ProjectCard({ project, onDetailClick, onHover }: ProjectCardProp
             <h4 id={`project-title-${project.id}`} className="text-[#020817] font-semibold text-[20px] leading-[28px]">
               {project.title}
             </h4>
-            
+
             {/* Category tag */}
             <span className="bg-[#F1F5F9] text-[#020817] text-[14px] font-medium px-3 py-1 rounded-full whitespace-nowrap select-none">
               {project.isInternship ? 'Internship Project' : 'Personal Project'}
@@ -63,20 +60,17 @@ export function ProjectCard({ project, onDetailClick, onHover }: ProjectCardProp
 
         {/* View Details Primary Trigger Button */}
         <div className="pt-6 mt-auto">
-          <motion.button
+          <button
             onClick={() => onDetailClick(project)}
             onFocus={onHover}
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            transition={{ duration: 0.15 }}
-            className="w-full bg-[#020817] text-white hover:bg-[#0F172A] active:bg-[#020817] active:text-[#E5E7EB] text-[16px] font-medium py-3 px-6 rounded-[6px] transition-colors focus:outline-hidden focus:ring-2 focus:ring-[#020817] focus:ring-offset-2 flex items-center justify-center gap-2 cursor-pointer"
+            className="hover-scale w-full bg-[#020817] text-white hover:bg-[#0F172A] active:bg-[#020817] active:text-[#E5E7EB] text-[16px] font-medium py-3 px-6 rounded-[6px] transition-colors focus:outline-hidden focus:ring-2 focus:ring-[#020817] focus:ring-offset-2 flex items-center justify-center gap-2 cursor-pointer"
             aria-labelledby={`project-title-${project.id}`}
           >
             <span>View Details</span>
             <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-          </motion.button>
+          </button>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

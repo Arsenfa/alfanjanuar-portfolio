@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Mail, Github, Linkedin, Instagram, Twitter, CheckCircle2, Send, Loader2 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { useInView } from '../hooks/useInView';
 
 export function ContactSection() {
+  const { ref, isInView } = useInView({ rootMargin: '-100px' });
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -52,12 +54,7 @@ export function ContactSection() {
 
   return (
     <section id="contact" className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8 py-16">
-      <motion.div
-        initial={{ y: 40, opacity: 0 }}
-        whileInView={{ y: 0, opacity: 1 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-      >
+      <div ref={ref} className={`reveal ${isInView ? 'visible' : ''}`}>
         {/* Section Header */}
         <div className="mb-12">
           <h2 className="text-[#020817] text-3xl sm:text-4xl font-bold tracking-tight">
@@ -71,7 +68,7 @@ export function ContactSection() {
 
         {/* Grid Container */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          
+
           {/* Left Column (Span 7): Contact Form Panel */}
           <div className="lg:col-span-7 bg-white border border-[#E5E7EB] rounded-[8px] p-6 sm:p-8 shadow-[rgba(0,0,0,0.05)_0px_1px_2px_0px] space-y-6">
             <div className="space-y-1">
@@ -178,13 +175,10 @@ export function ContactSection() {
                 </div>
 
                 {/* Submit Button */}
-                <motion.button
+                <button
                   type="submit"
                   disabled={isSubmitting || !formData.name || !formData.email || !formData.message}
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  transition={{ duration: 0.15 }}
-                  className="w-full sm:w-auto bg-[#020817] text-white hover:bg-[#0F172A] disabled:bg-[#64748B] disabled:cursor-not-allowed text-[16px] font-medium py-3 px-6 rounded-[6px] transition-colors focus:outline-hidden focus:ring-2 focus:ring-[#020817] focus:ring-offset-2 flex items-center justify-center gap-2 cursor-pointer"
+                  className="hover-scale w-full sm:w-auto bg-[#020817] text-white hover:bg-[#0F172A] disabled:bg-[#64748B] disabled:cursor-not-allowed text-[16px] font-medium py-3 px-6 rounded-[6px] transition-colors focus:outline-hidden focus:ring-2 focus:ring-[#020817] focus:ring-offset-2 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   {isSubmitting ? (
                     <>
@@ -197,7 +191,7 @@ export function ContactSection() {
                       <span>Send me an email</span>
                     </>
                   )}
-                </motion.button>
+                </button>
               </form>
             )}
 
@@ -216,7 +210,7 @@ export function ContactSection() {
                           {new Date(msg.timestamp).toLocaleTimeString()}
                         </span>
                       </div>
-                      {msg.subject && <div className="font-bold text-[#0F172A] italic">Sub: {msg.subject}</div>}
+                      {msg.subject && <div className="font-bold text-[#0F172A]">Sub: {msg.subject}</div>}
                       <p className="text-[#64748B] truncate">{msg.message}</p>
                     </div>
                   ))}
@@ -318,7 +312,7 @@ export function ContactSection() {
           </div>
 
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }

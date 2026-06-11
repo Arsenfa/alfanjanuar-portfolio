@@ -1,17 +1,14 @@
 import React from 'react';
 import { experiencesData } from '../data';
 import { Calendar, MapPin, Briefcase } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { useInView } from '../hooks/useInView';
 
 export function ExperienceSection() {
+  const { ref, isInView } = useInView({ rootMargin: '-100px' });
+
   return (
     <section id="experience" className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8 py-16">
-      <motion.div
-        initial={{ y: 40, opacity: 0 }}
-        whileInView={{ y: 0, opacity: 1 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-      >
+      <div ref={ref} className={`reveal ${isInView ? 'visible' : ''}`}>
         {/* Section Header */}
         <div className="mb-12">
           <h2 className="text-[#020817] text-3xl sm:text-4xl font-bold tracking-tight">
@@ -33,7 +30,7 @@ export function ExperienceSection() {
                   <h3 className="text-[#020817] text-xl md:text-2xl font-bold tracking-tight">
                     {exp.role}
                   </h3>
-                  
+
                   {/* Organization and location info */}
                   <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[#0F172A] font-medium text-[16px]">
                     <span className="flex items-center gap-1.5">
@@ -64,7 +61,7 @@ export function ExperienceSection() {
                 <h4 className="text-[#020817] text-[16px] font-semibold">
                   {exp.descriptionTitle}
                 </h4>
-                
+
                 <ul className="space-y-3 pl-1.5">
                   {exp.bullets.map((bullet, idx) => (
                     <li key={idx} className="flex gap-3 text-[#0F172A] text-[16px] font-normal leading-[24px]">
@@ -95,7 +92,7 @@ export function ExperienceSection() {
             </div>
           ))}
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }

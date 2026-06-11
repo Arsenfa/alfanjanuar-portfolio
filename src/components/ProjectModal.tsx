@@ -2,14 +2,14 @@ import React from 'react';
 import { Project } from '../types';
 import { ProjectMockup } from './ProjectMockup';
 import { CheckCircle2 } from 'lucide-react';
-import { motion } from 'framer-motion';
 
 interface ProjectModalProps {
   project: Project | null;
   onClose: () => void;
+  isClosing?: boolean;
 }
 
-export function ProjectModal({ project, onClose }: ProjectModalProps) {
+export function ProjectModal({ project, onClose, isClosing }: ProjectModalProps) {
   if (!project) return null;
 
   React.useEffect(() => {
@@ -98,24 +98,20 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 overflow-y-auto bg-black/50 flex p-4 sm:p-6 lg:p-8 select-none"
+      className={`fixed inset-0 z-50 overflow-y-auto bg-black/50 flex p-4 sm:p-6 lg:p-8 select-none transition-opacity duration-200 ${isClosing ? 'opacity-0' : 'opacity-100'}`}
       onClick={onClose}
     >
       {/* Modal Container */}
-      <motion.main
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.2, ease: "easeOut" }}
+      <main
         onClick={(e) => e.stopPropagation()}
-        className="bg-white w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-[8px] border border-[#E5E7EB] shadow-[rgba(0,0,0,0.15)_0px_8px_24px_0px] relative custom-scrollbar flex flex-col p-[24px] md:p-[32px] m-auto"
+        className={`modal-content ${isClosing ? 'closing' : ''} bg-white w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-[8px] border border-[#E5E7EB] shadow-[rgba(0,0,0,0.15)_0px_8px_24px_0px] relative custom-scrollbar flex flex-col p-[24px] md:p-[32px] m-auto`}
         style={{ margin: 'auto' }}
         data-purpose="modal-container"
       >
         {/* Close Icon (Top Right) */}
-        <button 
+        <button
           onClick={onClose}
-          aria-label="Close modal" 
+          aria-label="Close modal"
           className="absolute top-4 right-4 text-[#64748B] hover:text-[#020817] transition-colors z-20 cursor-pointer"
         >
           <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -250,7 +246,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
             {/* Gap between tech stack title and tags: 12px */}
             <div className="flex flex-wrap gap-2 mt-[12px]">
               {project.tags.map((tag) => (
-                <span 
+                <span
                   key={tag}
                   className="px-4 py-2 bg-[#F1F5F9] text-[#020817] text-[14px] font-medium rounded-full border border-[#E5E7EB] select-none whitespace-nowrap"
                 >
@@ -265,16 +261,14 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
         {/* Footer Close Details Button */}
         {/* Gap between tags and Close Details button: 32px */}
         <div className="mt-[32px] flex justify-end">
-          <motion.button 
+          <button
             onClick={onClose}
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            className="bg-[#020817] hover:opacity-90 text-white text-[14px] font-semibold py-3 px-8 rounded-[6px] transition-all cursor-pointer shadow-[rgba(0,0,0,0.05)_0px_1px_2px_0px]"
+            className="hover-scale bg-[#020817] hover:opacity-90 text-white text-[14px] font-semibold py-3 px-8 rounded-[6px] transition-all cursor-pointer shadow-[rgba(0,0,0,0.05)_0px_1px_2px_0px]"
           >
             Close Details
-          </motion.button>
+          </button>
         </div>
-      </motion.main>
+      </main>
     </div>
   );
 }

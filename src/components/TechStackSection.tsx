@@ -2,7 +2,7 @@ import React from 'react';
 import { techStackData } from '../data';
 import { Monitor, Palette, Code2, GitFork, Smartphone, Cpu, HelpCircle } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { useInView } from '../hooks/useInView';
 
 const iconMap: Record<string, LucideIcon> = {
   Monitor,
@@ -14,15 +14,11 @@ const iconMap: Record<string, LucideIcon> = {
 };
 
 export function TechStackSection() {
+  const { ref, isInView } = useInView({ rootMargin: '-100px' });
+
   return (
     <section id="skills" className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8 py-16 bg-[#F8FAFC]">
-      <motion.div
-        initial={{ y: 40, opacity: 0 }}
-        whileInView={{ y: 0, opacity: 1 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="space-y-12"
-      >
+      <div ref={ref} className={`reveal ${isInView ? 'visible' : ''} space-y-12`}>
         {/* Section Header */}
         <div>
           <h2 className="text-[#020817] text-3xl sm:text-4xl font-bold tracking-tight">
@@ -42,10 +38,8 @@ export function TechStackSection() {
             const IconComponent = iconMap[category.icon] ?? HelpCircle;
 
             return (
-              <motion.div
+              <div
                 key={category.id}
-                whileHover={{ borderColor: "#64748B" }}
-                transition={{ duration: 0.2 }}
                 className="bg-white border border-[#E5E7EB] rounded-[8px] p-6 shadow-[rgba(0,0,0,0.05)_0px_1px_2px_0px] hover:border-[#64748B] hover:shadow-[rgba(0,0,0,0.08)_0px_4px_12px_0px] transition-all duration-300 flex flex-col justify-between"
               >
                 <div className="space-y-4">
@@ -76,11 +70,11 @@ export function TechStackSection() {
                     </span>
                   ))}
                 </div>
-              </motion.div>
+              </div>
             );
           })}
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }
