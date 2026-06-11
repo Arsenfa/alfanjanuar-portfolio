@@ -1,7 +1,7 @@
 import React from 'react';
 import { Project } from '../types';
 import { ProjectMockup } from './ProjectMockup';
-import { ExternalLink, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface ProjectCardProps {

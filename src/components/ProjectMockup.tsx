@@ -307,8 +307,7 @@ export function ProjectMockup({ type, minimal }: MockupProps) {
             ? 'bg-slate-50 border-[#E5E7EB]' 
             : 'border-teal-400/40 border-2'
         }`} style={minimal ? {} : {
-          background: 'linear-gradient(135deg, rgba(20, 110, 100, 0.4) 0%, rgba(10, 80, 75, 0.7) 100%)',
-          backdropFilter: 'blur(8px)'
+          background: 'linear-gradient(135deg, rgba(20, 110, 100, 0.85) 0%, rgba(8, 60, 56, 0.95) 100%)'
         }}>
           {/* Top Panel */}
           <div className={`flex justify-between items-center text-[5.5px] font-medium px-1 py-0.5 rounded-sm ${minimal ? 'text-[#020817] bg-slate-200/50' : 'text-teal-100/90 bg-black/10'}`}>
