@@ -15,13 +15,17 @@ export function ProjectCard({ project, onDetailClick, onHover }: ProjectCardProp
   return (
     <motion.div
       onMouseEnter={onHover}
-      whileHover={{ scale: 1.02, boxShadow: "0 8px 30px rgba(0,0,0,0.12)" }}
-      transition={{ duration: 0.2 }}
-      className="bg-white rounded-[8px] border border-[#E5E7EB] hover:border-[#64748B] hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition-all duration-300 flex flex-col overflow-hidden h-full"
+      whileHover={{ y: -6 }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
+      className="group bg-white rounded-[8px] border border-[#E5E7EB] hover:border-[#64748B] shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_32px_rgba(2,8,23,0.1)] transition-all duration-300 flex flex-col overflow-hidden h-full"
     >
       {/* Visual Mockup Banner Container */}
       <div className="relative aspect-video w-full h-[220px] overflow-hidden border-b border-[#E5E7EB]">
-        <ProjectMockup type={project.mockupType} />
+        <div className="w-full h-full transition-transform duration-500 ease-out group-hover:scale-105">
+          <ProjectMockup type={project.mockupType} />
+        </div>
+        {/* Gradient overlay on hover */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#020817]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
       </div>
 
       {/* Card Content Details */}
@@ -69,7 +73,7 @@ export function ProjectCard({ project, onDetailClick, onHover }: ProjectCardProp
             aria-labelledby={`project-title-${project.id}`}
           >
             <span>View Details</span>
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
           </motion.button>
         </div>
       </div>
