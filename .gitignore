@@ -9,3 +9,5 @@ coverage/
 .qoder/
 .vercel
 stats.html
+test-results/
+playwright-report/
