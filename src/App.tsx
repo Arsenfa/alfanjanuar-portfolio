@@ -1,50 +1,59 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useMemo, lazy, Suspense, memo } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { ProjectCard } from './components/ProjectCard';
-import { ProjectModal } from './components/ProjectModal';
-import { ExperienceSection } from './components/ExperienceSection';
-import { TechStackSection } from './components/TechStackSection';
-import { ContactSection } from './components/ContactSection';
+import { ExperienceSection as ExperienceSectionRaw } from './components/ExperienceSection';
+import { TechStackSection as TechStackSectionRaw } from './components/TechStackSection';
+import { ContactSection as ContactSectionRaw } from './components/ContactSection';
 import { projectsData } from './data';
 import { Project } from './types';
 import { Github, Linkedin, ArrowUp, Instagram, Twitter } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+const ProjectModal = lazy(() =>
+  import('./components/ProjectModal').then((m) => ({ default: m.ProjectModal })),
+);
+
+const preloadModal = () => {
+  import('./components/ProjectModal');
+};
+
+const ExperienceSection = memo(ExperienceSectionRaw);
+const TechStackSection = memo(TechStackSectionRaw);
+const ContactSection = memo(ContactSectionRaw);
+
 export default function App() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
-  // Divide projects by categories
-  const realProjects = projectsData.filter((p) => p.category === 'real');
-  const portfolioProjects = projectsData.filter((p) => p.category === 'portfolio');
+  const realProjects = useMemo(
+    () => projectsData.filter((p) => p.category === 'real'),
+    [],
+  );
+  const portfolioProjects = useMemo(
+    () => projectsData.filter((p) => p.category === 'portfolio'),
+    [],
+  );
 
-  const handleOpenModal = (project: Project) => {
-    setSelectedProject(project);
-  };
+  const handleOpenModal = useCallback(
+    (project: Project) => setSelectedProject(project),
+    [],
+  );
 
-  const handleCloseModal = () => {
-    setSelectedProject(null);
-  };
+  const handleCloseModal = useCallback(() => setSelectedProject(null), []);
 
-  const scrollToContact = () => {
-    const contactSection = document.getElementById('contact');
-    if (contactSection) {
-      const top = contactSection.offsetTop - 70;
-      window.scrollTo({ top, behavior: 'smooth' });
-    }
-  };
+  const scrollToContact = useCallback(() => {
+    const el = document.getElementById('contact');
+    if (el) window.scrollTo({ top: el.offsetTop - 70, behavior: 'smooth' });
+  }, []);
 
-  const scrollToProjects = () => {
-    const projectsSection = document.getElementById('projects');
-    if (projectsSection) {
-      const top = projectsSection.offsetTop - 70;
-      window.scrollTo({ top, behavior: 'smooth' });
-    }
-  };
+  const scrollToProjects = useCallback(() => {
+    const el = document.getElementById('projects');
+    if (el) window.scrollTo({ top: el.offsetTop - 70, behavior: 'smooth' });
+  }, []);
 
-  const scrollToTop = () => {
+  const scrollToTop = useCallback(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  }, []);
 
   return (
     <div className="min-h-screen bg-white text-[#020817] font-sans antialiased flex flex-col justify-between">
@@ -87,6 +96,7 @@ export default function App() {
                   key={project.id}
                   project={project}
                   onDetailClick={handleOpenModal}
+                  onHover={preloadModal}
                 />
               ))}
             </div>
@@ -117,6 +127,7 @@ export default function App() {
                   key={project.id}
                   project={project}
                   onDetailClick={handleOpenModal}
+                  onHover={preloadModal}
                 />
               ))}
             </div>
@@ -223,7 +234,9 @@ export default function App() {
       {/* Detailed overlay modal */}
       <AnimatePresence>
         {selectedProject && (
-          <ProjectModal project={selectedProject} onClose={handleCloseModal} />
+          <Suspense fallback={null}>
+            <ProjectModal project={selectedProject} onClose={handleCloseModal} />
+          </Suspense>
         )}
       </AnimatePresence>
     </div>

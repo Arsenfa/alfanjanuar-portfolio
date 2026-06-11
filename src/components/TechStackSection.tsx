@@ -1,7 +1,17 @@
 import React from 'react';
 import { techStackData } from '../data';
-import * as LucideIcons from 'lucide-react';
+import { Monitor, Palette, Code2, GitFork, Smartphone, Cpu, HelpCircle } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
+
+const iconMap: Record<string, LucideIcon> = {
+  Monitor,
+  Palette,
+  Code2,
+  GitFork,
+  Smartphone,
+  Cpu,
+};
 
 export function TechStackSection() {
   return (
@@ -28,8 +38,8 @@ export function TechStackSection() {
         {/* Mobile: 1 col, Tablet: 2 cols, Desktop: 3 cols */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {techStackData.map((category) => {
-            // Dynamically resolve lucide icon name
-            const IconComponent = (LucideIcons as any)[category.icon] || LucideIcons.HelpCircle;
+            // Resolve icon from explicit map to preserve tree-shaking
+            const IconComponent = iconMap[category.icon] ?? HelpCircle;
 
             return (
               <motion.div

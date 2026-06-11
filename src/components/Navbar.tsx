@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Mail, Menu, X } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -6,39 +6,45 @@ interface NavbarProps {
   onContactClick: () => void;
 }
 
+const NAV_ITEMS = [
+  { id: 'home', label: 'Home' },
+  { id: 'projects', label: 'Projects' },
+  { id: 'experience', label: 'Experience' },
+  { id: 'skills', label: 'Skills' },
+  { id: 'contact', label: 'Contact' },
+];
+
 export function Navbar({ onContactClick }: NavbarProps) {
   const [activeSection, setActiveSection] = useState('home');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const rafRef = useRef<number | null>(null);
 
-  const navItems = [
-    { id: 'home', label: 'Home' },
-    { id: 'projects', label: 'Projects' },
-    { id: 'experience', label: 'Experience' },
-    { id: 'skills', label: 'Skills' },
-    { id: 'contact', label: 'Contact' },
-  ];
-
-  useEffect(() => {
-    const handleScroll = () => {
+  const handleScroll = useCallback(() => {
+    if (rafRef.current !== null) return;
+    rafRef.current = requestAnimationFrame(() => {
       const scrollPosition = window.scrollY + 100;
-
-      // Find which section is currently in view
-      for (const item of navItems) {
-        const el = document.getElementById(item.id);
+      for (const { id } of NAV_ITEMS) {
+        const el = document.getElementById(id);
         if (el) {
           const top = el.offsetTop;
           const height = el.offsetHeight;
           if (scrollPosition >= top && scrollPosition < top + height) {
-            setActiveSection(item.id);
+            setActiveSection(id);
             break;
           }
         }
       }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+      rafRef.current = null;
+    });
   }, []);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+    };
+  }, [handleScroll]);
 
   const scrollToSection = (id: string) => {
     setIsMobileMenuOpen(false);
@@ -73,7 +79,7 @@ export function Navbar({ onContactClick }: NavbarProps) {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-8">
-          {navItems.map((item) => (
+          {NAV_ITEMS.map((item) => (
             <motion.button
               key={item.id}
               onClick={() => scrollToSection(item.id)}
@@ -129,7 +135,7 @@ export function Navbar({ onContactClick }: NavbarProps) {
       {/* Mobile Drawer Navigation Menu */}
       {isMobileMenuOpen && (
         <nav className="absolute top-[65px] left-0 w-full bg-white border-b border-[#E2E8F0] py-4 px-6 flex flex-col gap-4 shadow-lg md:hidden animate-fade-in">
-          {navItems.map((item) => (
+          {NAV_ITEMS.map((item) => (
             <motion.button
               key={item.id}
               onClick={() => scrollToSection(item.id)}

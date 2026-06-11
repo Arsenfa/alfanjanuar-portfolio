@@ -97,18 +97,18 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
   };
 
   return (
-    <div 
-      className="fixed inset-0 z-50 overflow-y-auto bg-black/40 backdrop-blur-[4px] flex p-4 sm:p-6 lg:p-8 select-none"
+    <div
+      className="fixed inset-0 z-50 overflow-y-auto bg-black/50 flex p-4 sm:p-6 lg:p-8 select-none"
       onClick={onClose}
     >
       {/* Modal Container */}
       <motion.main
-        initial={{ opacity: 0, scale: 0.95, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.95, y: 20 }}
-        transition={{ duration: 0.25, ease: "easeOut" }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2, ease: "easeOut" }}
         onClick={(e) => e.stopPropagation()}
-        className="bg-white w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-[8px] border border-[#E5E7EB] shadow-[rgba(0,0,0,0.05)_0px_8px_24px_0px] relative custom-scrollbar flex flex-col p-[24px] md:p-[32px] m-auto"
+        className="bg-white w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-[8px] border border-[#E5E7EB] shadow-[rgba(0,0,0,0.15)_0px_8px_24px_0px] relative custom-scrollbar flex flex-col p-[24px] md:p-[32px] m-auto"
         style={{ margin: 'auto' }}
         data-purpose="modal-container"
       >

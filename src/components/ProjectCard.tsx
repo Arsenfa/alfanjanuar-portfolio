@@ -7,12 +7,14 @@ import { motion } from 'framer-motion';
 interface ProjectCardProps {
   project: Project;
   onDetailClick: (project: Project) => void;
+  onHover?: () => void;
   key?: React.Key;
 }
 
-export function ProjectCard({ project, onDetailClick }: ProjectCardProps) {
+export function ProjectCard({ project, onDetailClick, onHover }: ProjectCardProps) {
   return (
     <motion.div
+      onMouseEnter={onHover}
       whileHover={{ scale: 1.02, boxShadow: "0 8px 30px rgba(0,0,0,0.12)" }}
       transition={{ duration: 0.2 }}
       className="bg-white rounded-[8px] border border-[#E5E7EB] hover:border-[#64748B] hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition-all duration-300 flex flex-col overflow-hidden h-full"
@@ -59,6 +61,7 @@ export function ProjectCard({ project, onDetailClick }: ProjectCardProps) {
         <div className="pt-6 mt-auto">
           <motion.button
             onClick={() => onDetailClick(project)}
+            onFocus={onHover}
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             transition={{ duration: 0.15 }}
