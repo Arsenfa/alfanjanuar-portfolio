@@ -14,7 +14,7 @@ export function Hero({ onViewWorkClick, onGetInTouchClick }: HeroProps) {
       className="relative max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8 py-16 md:py-24 flex flex-col items-center justify-center text-center select-none"
     >
       {/* Decorative floating accent */}
-      <div className="absolute top-1/4 left-1/10 w-24 h-24 bg-[#E2E8F0]/30 rounded-full blur-3xl -z-10 animate-pulse"></div>
+      <div className="absolute top-1/4 left-1/10 w-24 h-24 bg-[#E2E8F0]/30 rounded-full blur-3xl -z-10"></div>
       <div className="absolute bottom-1/4 right-1/10 w-32 h-32 bg-[#F1F5F9]/40 rounded-full blur-3xl -z-10"></div>
 
       {/* Hero Headline Group */}

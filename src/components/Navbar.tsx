@@ -63,7 +63,7 @@ export function Navbar({ onContactClick }: NavbarProps) {
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className="sticky top-0 z-50 w-full h-[65px] bg-[rgba(255,255,255,0.8)] backdrop-blur-[10px] border-b border-[#E2E8F0]"
+      className="sticky top-0 z-50 w-full h-[65px] bg-[rgba(255,255,255,0.95)] border-b border-[#E2E8F0]"
     >
       <div className="max-w-[1440px] mx-auto h-full px-4 sm:px-6 md:px-8 flex items-center justify-between">
         {/* Logo/Name */}

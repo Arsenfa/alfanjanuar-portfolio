@@ -15,7 +15,7 @@ export function ProjectMockup({ type, minimal }: MockupProps) {
 
         {/* Left: Text */}
         <div className="relative z-10 flex flex-col justify-end h-full max-w-[50%]">
-          <div className={`backdrop-blur-xs rounded-lg p-2.5 w-fit mb-3 border ${minimal ? 'bg-slate-50 border-[#E2E8F0] text-[#020817]' : 'bg-white/10 border-white/20 text-white'}`}>
+          <div className={`rounded-lg p-2.5 w-fit mb-3 border ${minimal ? 'bg-slate-50 border-[#E2E8F0] text-[#020817]' : 'bg-white/20 border-white/20 text-white'}`}>
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
             </svg>
@@ -93,7 +93,7 @@ export function ProjectMockup({ type, minimal }: MockupProps) {
 
         {/* Left: Text */}
         <div className="relative z-10 flex flex-col justify-end h-full max-w-[50%]">
-          <div className={`backdrop-blur-xs rounded-lg p-2.5 w-fit mb-3 border ${minimal ? 'bg-slate-50 border-[#E2E8F0] text-[#020817]' : 'bg-white/10 border-white/20 text-white'}`}>
+          <div className={`rounded-lg p-2.5 w-fit mb-3 border ${minimal ? 'bg-slate-50 border-[#E2E8F0] text-[#020817]' : 'bg-white/20 border-white/20 text-white'}`}>
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
@@ -164,14 +164,14 @@ export function ProjectMockup({ type, minimal }: MockupProps) {
     return (
       <div className={`relative w-full h-full overflow-hidden flex items-center justify-between p-6 md:p-8 select-none ${minimal ? 'bg-white' : 'bg-violet-600'}`}>
         {/* Parallax stars bg */}
-        <div className={`absolute right-4 top-4 w-1.5 h-1.5 rounded-full opacity-60 ${minimal ? 'bg-slate-300' : 'bg-yellow-300 animate-ping'}`}></div>
+        <div className={`absolute right-4 top-4 w-1.5 h-1.5 rounded-full opacity-60 ${minimal ? 'bg-slate-300' : 'bg-yellow-300'}`}></div>
         <div className={`absolute right-12 bottom-10 w-1 h-1 rounded-full opacity-40 ${minimal ? 'bg-slate-200' : 'bg-white'}`}></div>
         <div className={`absolute left-1/3 top-10 w-1 h-1 rounded-full opacity-50 ${minimal ? 'bg-slate-200' : 'bg-indigo-300'}`}></div>
         <div className={`absolute right-1/4 top-24 w-2 h-2 rounded-full opacity-35 blur-xs ${minimal ? 'bg-slate-100' : 'bg-purple-400'}`}></div>
 
         {/* Left: Text */}
         <div className="relative z-10 flex flex-col justify-end h-full max-w-[50%]">
-          <div className={`backdrop-blur-xs rounded-lg p-2.5 w-fit mb-3 border ${minimal ? 'bg-slate-50 border-[#E2E8F0] text-[#020817]' : 'bg-white/10 border-white/20 text-white'}`}>
+          <div className={`rounded-lg p-2.5 w-fit mb-3 border ${minimal ? 'bg-slate-50 border-[#E2E8F0] text-[#020817]' : 'bg-white/20 border-white/20 text-white'}`}>
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
@@ -217,7 +217,7 @@ export function ProjectMockup({ type, minimal }: MockupProps) {
           {/* Controller HUD layout */}
           <div className={`flex justify-between items-center text-[5.5px] font-mono p-1 rounded ${minimal ? 'text-[#64748B] bg-slate-200/50' : 'text-violet-400 bg-violet-950/60'}`}>
             <span>[W/S] STEER</span>
-            <span className={minimal ? 'text-[#020817] font-semibold' : 'text-violet-200 animate-pulse'}>[SPACE] LASER</span>
+            <span className={minimal ? 'text-[#020817] font-semibold' : 'text-violet-200'}>[SPACE] LASER</span>
           </div>
         </div>
       </div>
@@ -231,7 +231,7 @@ export function ProjectMockup({ type, minimal }: MockupProps) {
 
         {/* Left: Text */}
         <div className="relative z-10 flex flex-col justify-end h-full max-w-[50%]">
-          <div className={`backdrop-blur-xs rounded-lg p-2.5 w-fit mb-3 border ${minimal ? 'bg-slate-50 border-[#E2E8F0] text-[#020817]' : 'bg-white/10 border-white/20 text-white'}`}>
+          <div className={`rounded-lg p-2.5 w-fit mb-3 border ${minimal ? 'bg-slate-50 border-[#E2E8F0] text-[#020817]' : 'bg-white/20 border-white/20 text-white'}`}>
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
             </svg>
@@ -267,7 +267,7 @@ export function ProjectMockup({ type, minimal }: MockupProps) {
               <span className={`block text-[5.5px] font-mono font-bold ${minimal ? 'text-slate-800' : 'text-emerald-400'}`}>● PARSING SOURCE FILE</span>
               <span className={`block text-[7px] ${minimal ? 'text-[#0F172A]' : 'text-slate-200'}`}>Below is your AI summarization:</span>
               <div className="w-16 h-1 bg-slate-200 rounded-sm overflow-hidden mt-0.5">
-                <div className={`h-full ${minimal ? 'bg-[#020817]' : 'bg-sky-400 animate-pulse'}`}></div>
+                <div className={`h-full ${minimal ? 'bg-[#020817]' : 'bg-sky-400'}`}></div>
               </div>
             </div>
           </div>
@@ -291,7 +291,7 @@ export function ProjectMockup({ type, minimal }: MockupProps) {
 
         {/* Left: Text */}
         <div className="relative z-10 flex flex-col justify-end h-full max-w-[50%]">
-          <div className={`backdrop-blur-xs rounded-lg p-2.5 w-fit mb-3 border ${minimal ? 'bg-slate-50 border-[#E2E8F0] text-[#020817]' : 'bg-white/10 border-white/20 text-white'}`}>
+          <div className={`rounded-lg p-2.5 w-fit mb-3 border ${minimal ? 'bg-slate-50 border-[#E2E8F0] text-[#020817]' : 'bg-white/20 border-white/20 text-white'}`}>
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>

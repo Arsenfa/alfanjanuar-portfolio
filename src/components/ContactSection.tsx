@@ -63,7 +63,7 @@ export function ContactSection() {
           <h2 className="text-[#020817] text-3xl sm:text-4xl font-bold tracking-tight">
             Get in Touch
           </h2>
-          <p className="text-[#64748B] text-[16px] font-normal leading-[24px] mt-1.5 animate-pulse">
+          <p className="text-[#64748B] text-[16px] font-normal leading-[24px] mt-1.5">
             I'm always interested in new opportunities and exciting projects. Feel free to reach out if you'd like to work together!
           </p>
           <div className="w-16 h-1 bg-[#020817] mt-3 rounded-full"></div>
