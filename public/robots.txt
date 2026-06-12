@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://alfanjanuar.dev/sitemap.xml
+Sitemap: https://alfan-januar.is-a.dev/sitemap.xml
