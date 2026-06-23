@@ -40,10 +40,11 @@ export function AboutSection({ content, onHireClick }: AboutSectionProps) {
 
           {/* Photo */}
           <div className="lg:col-span-5">
-            <div className="relative mx-auto w-full max-w-[360px] aspect-[4/5] rounded-[8px] overflow-hidden border border-[#E5E7EB] bg-[#F8FAFC] shadow-[rgba(0,0,0,0.05)_0px_1px_2px_0px]">
+            {/* ponytail: mobile caps the portrait so it doesn't eat the screen; lg: restores the desktop size unchanged */}
+            <div className="relative mx-auto w-full max-w-[200px] sm:max-w-[240px] lg:max-w-[360px] aspect-[4/5] rounded-[8px] overflow-hidden border border-[#E5E7EB] bg-[#F8FAFC] shadow-[rgba(0,0,0,0.05)_0px_1px_2px_0px]">
               {/* Monogram fallback (shown until a real photo is added) */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-[#020817] font-bold text-7xl tracking-tight select-none">AJ</span>
+                <span className="text-[#020817] font-bold text-5xl sm:text-6xl lg:text-7xl tracking-tight select-none">AJ</span>
               </div>
               {/* Real photo: drop a file named profile.jpg into the public/ folder */}
               <img

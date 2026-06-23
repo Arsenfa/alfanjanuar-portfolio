@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Mail, Menu, X } from 'lucide-react';
+import { Mail, MoreVertical, X } from 'lucide-react';
 
 interface NavbarProps {
   onContactClick: () => void;
@@ -105,11 +105,23 @@ export function Navbar({ onContactClick }: NavbarProps) {
           >
             <Mail className="w-5 h-5" />
           </button>
+          {/* ponytail: two stacked icons crossfade+rotate so the tap reads as a morph, not a swap */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="hover-scale p-2 text-[#020817] hover:bg-[#F8FAFC] rounded-lg transition-colors"
+            aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={isMobileMenuOpen}
+            className="hover-scale relative w-10 h-10 grid place-items-center text-[#020817] hover:bg-[#F8FAFC] active:bg-[#F1F5F9] rounded-lg transition-colors focus:outline-hidden focus:ring-2 focus:ring-[#020817] focus:ring-offset-2"
           >
-            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            <MoreVertical
+              className={`w-6 h-6 col-start-1 row-start-1 transition-all duration-300 ease-out ${
+                isMobileMenuOpen ? 'rotate-90 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'
+              }`}
+            />
+            <X
+              className={`w-6 h-6 col-start-1 row-start-1 transition-all duration-300 ease-out ${
+                isMobileMenuOpen ? 'rotate-0 scale-100 opacity-100' : '-rotate-90 scale-0 opacity-0'
+              }`}
+            />
           </button>
         </div>
       </div>
@@ -117,11 +129,12 @@ export function Navbar({ onContactClick }: NavbarProps) {
       {/* Mobile Drawer Navigation Menu */}
       {isMobileMenuOpen && (
         <nav className="absolute top-[65px] left-0 w-full bg-white border-b border-[#E2E8F0] py-4 px-6 flex flex-col gap-4 shadow-lg md:hidden animate-fade-in">
-          {NAV_ITEMS.map((item) => (
+          {NAV_ITEMS.map((item, i) => (
             <button
               key={item.id}
               onClick={() => scrollToSection(item.id)}
-              className={`hover-scale text-left text-base font-medium py-2.5 px-4 rounded-lg select-none cursor-pointer transition-colors ${
+              style={{ animationDelay: `${i * 50}ms` }}
+              className={`animate-fade-slide-down hover-scale text-left text-base font-medium py-2.5 px-4 rounded-lg select-none cursor-pointer transition-colors ${
                 activeSection === item.id
                   ? 'bg-[#F1F5F9] text-[#020817]'
                   : 'text-[#64748B] hover:bg-[#F8FAFC]'
