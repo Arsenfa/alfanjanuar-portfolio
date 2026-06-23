@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
-import { Mail, Github, Linkedin, Instagram, Twitter, CheckCircle2, Send, Loader2 } from 'lucide-react';
+import { Mail, Github, Linkedin, Instagram, CheckCircle2, AlertCircle, Send, Loader2 } from 'lucide-react';
+import { XIcon } from './XIcon';
 import { useInView } from '../hooks/useInView';
+
+// Get your free access key at https://web3forms.com (it is tied to the email
+// that will receive the messages, so it is safe to expose in the client).
+const WEB3FORMS_ACCESS_KEY = '1e040d40-d5f3-4113-9c73-8b1e49a60aa0';
+const COOLDOWN_MS = 60_000; // one message per minute
+const LAST_SENT_KEY = 'contact_last_sent';
 
 export function ContactSection() {
   const { ref, isInView } = useInView({ rootMargin: '-100px' });
@@ -14,56 +21,75 @@ export function ContactSection() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
-  const [localMessages, setLocalMessages] = useState<any[]>(() => {
-    try {
-      return JSON.parse(localStorage.getItem('alfan_portfolio_messages') || '[]');
-    } catch {
-      return [];
-    }
-  });
+  const [cooldownMsg, setCooldownMsg] = useState('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    if (cooldownMsg) setCooldownMsg('');
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.message) return;
+
+    // Honeypot: bots fill hidden fields. If it has a value, silently bail out.
+    const honeypot = (e.currentTarget.elements.namedItem('botcheck') as HTMLInputElement | null)?.value;
+    if (honeypot) return;
+
+    // Rate limit: one message per minute (survives reload via localStorage).
+    const lastSent = Number(localStorage.getItem(LAST_SENT_KEY) || 0);
+    const remaining = COOLDOWN_MS - (Date.now() - lastSent);
+    if (remaining > 0) {
+      setCooldownMsg(`Please wait ${Math.ceil(remaining / 1000)}s before sending another message.`);
+      return;
+    }
+    setCooldownMsg('');
 
     setIsSubmitting(true);
     setSubmitStatus('idle');
 
-    // Simulate real mail transfer protocol or API gateway dispatch
-    setTimeout(() => {
-      const newMessage = {
-        ...formData,
-        id: Math.random().toString(36).substr(2, 9),
-        timestamp: new Date().toISOString(),
-      };
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject || `New portfolio message from ${formData.name}`,
+          message: formData.message,
+          from_name: 'Portfolio Contact Form',
+        }),
+      });
+      const data = await res.json();
 
-      const updated = [newMessage, ...localMessages];
-      setLocalMessages(updated);
-      localStorage.setItem('alfan_portfolio_messages', JSON.stringify(updated));
-
+      if (data.success) {
+        localStorage.setItem(LAST_SENT_KEY, String(Date.now()));
+        setSubmitStatus('success');
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      } else {
+        setSubmitStatus('error');
+      }
+    } catch {
+      setSubmitStatus('error');
+    } finally {
       setIsSubmitting(false);
-      setSubmitStatus('success');
-      setFormData({ name: '', email: '', subject: '', message: '' });
-    }, 1500);
+    }
   };
 
   return (
     <section id="contact" className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8 py-16">
       <div ref={ref} className={`reveal ${isInView ? 'visible' : ''}`}>
         {/* Section Header */}
-        <div className="mb-12">
+        <div className="mb-12 text-center">
           <h2 className="text-[#020817] text-3xl sm:text-4xl font-bold tracking-tight">
             Get in Touch
           </h2>
-          <p className="text-[#64748B] text-[16px] font-normal leading-[24px] mt-1.5">
+          <p className="text-[#64748B] text-[16px] font-normal leading-[24px] mt-1.5 max-w-2xl mx-auto">
             I'm always interested in new opportunities and exciting projects. Feel free to reach out if you'd like to work together!
           </p>
-          <div className="w-16 h-1 bg-[#020817] mt-3 rounded-full"></div>
+          <div className="w-16 h-1 bg-[#020817] mt-4 rounded-full mx-auto"></div>
         </div>
 
         {/* Grid Container */}
@@ -81,26 +107,56 @@ export function ContactSection() {
               </p>
             </div>
 
-            {submitStatus === 'success' && (
-              <div className="bg-[#F1F5F9] border border-[#E5E7EB] rounded-[6px] p-4 flex items-start gap-3 animate-fade-in">
-                <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
-                <div>
-                  <h4 className="text-[#020817] text-[14px] font-bold">Message Delivered Successfully!</h4>
-                  <p className="text-[#64748B] text-[14px] mt-1">
-                    Thank you for reaching out. Your message has been archived locally in this preview. I will reply shortly.
-                  </p>
-                  <button
-                    onClick={() => setSubmitStatus('idle')}
-                    className="text-xs font-semibold text-[#020817] underline mt-2.5 cursor-pointer hover:opacity-80 block"
-                  >
-                    Send another message
-                  </button>
+            <div role="status" aria-live="polite">
+              {submitStatus === 'success' && (
+                <div className="bg-[#F1F5F9] border border-[#E5E7EB] rounded-[6px] p-4 flex items-start gap-3 animate-fade-in">
+                  <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h4 className="text-[#020817] text-[14px] font-bold">Message sent successfully!</h4>
+                    <p className="text-[#64748B] text-[14px] mt-1">
+                      Thanks for reaching out. Your message is on its way to my inbox and I'll get back to you as soon as I can.
+                    </p>
+                    <button
+                      onClick={() => setSubmitStatus('idle')}
+                      className="text-xs font-semibold text-[#020817] underline mt-2.5 cursor-pointer hover:opacity-80 block"
+                    >
+                      Send another message
+                    </button>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
 
             {submitStatus !== 'success' && (
               <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Honeypot anti-spam field, hidden from real users */}
+                <input
+                  type="text"
+                  name="botcheck"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  className="hidden"
+                />
+
+                {cooldownMsg && (
+                  <div role="status" className="bg-[#F1F5F9] border border-[#E5E7EB] rounded-[6px] p-3 text-[14px] text-[#020817] animate-fade-in">
+                    {cooldownMsg}
+                  </div>
+                )}
+
+                {submitStatus === 'error' && (
+                  <div role="alert" className="bg-red-50 border border-red-200 rounded-[6px] p-4 flex items-start gap-3 animate-fade-in">
+                    <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <h4 className="text-[#020817] text-[14px] font-bold">Something went wrong</h4>
+                      <p className="text-[#64748B] text-[14px] mt-1">
+                        Your message couldn't be sent. Please try again, or email me directly at alfanjanuar.work@gmail.com.
+                      </p>
+                    </div>
+                  </div>
+                )}
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Name */}
                   <div className="space-y-1.5">
@@ -194,29 +250,6 @@ export function ContactSection() {
                 </button>
               </form>
             )}
-
-            {/* Local Simulated Inbox Container */}
-            {localMessages.length > 0 && (
-              <div className="pt-6 border-t border-[#E2E8F0] space-y-3">
-                <span className="block text-[#64748B] text-[12px] font-bold uppercase tracking-wider">
-                  Simulated Sent Inbox ({localMessages.length}) - Persistence test
-                </span>
-                <div className="max-h-[160px] overflow-y-auto space-y-2 pr-1">
-                  {localMessages.map((msg) => (
-                    <div key={msg.id} className="p-3 bg-[#F8FAFC] border border-[#E5E7EB] rounded-[6px] text-[13px] space-y-1">
-                      <div className="flex justify-between items-start text-xs font-semibold text-[#020817]">
-                        <span>{msg.name} ({msg.email})</span>
-                        <span className="text-[#64748B] font-normal text-[11px]">
-                          {new Date(msg.timestamp).toLocaleTimeString()}
-                        </span>
-                      </div>
-                      {msg.subject && <div className="font-bold text-[#0F172A]">Sub: {msg.subject}</div>}
-                      <p className="text-[#64748B] truncate">{msg.message}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
 
           {/* Right Column (Span 5): Connect / Channels Info */}
@@ -233,7 +266,7 @@ export function ContactSection() {
             <div className="space-y-4">
               {/* Email link */}
               <a
-                href="mailto:alfanjanuar50@gmail.com"
+                href="mailto:alfanjanuar.work@gmail.com"
                 className="flex items-center gap-4 p-3 border border-[#E5E7EB] hover:border-[#64748B] bg-white rounded-[6px] hover:bg-[#F8FAFC] text-[#020817] transition-all group select-text"
               >
                 <div className="p-2 bg-[#F1F5F9] text-[#020817] rounded-lg">
@@ -241,7 +274,7 @@ export function ContactSection() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <span className="block text-[12px] text-[#64748B] font-bold uppercase tracking-wider">Direct Email</span>
-                  <span className="block text-[14px] sm:text-[16px] font-medium truncate">alfanjanuar50@gmail.com</span>
+                  <span className="block text-[14px] sm:text-[16px] font-medium truncate">alfanjanuar.work@gmail.com</span>
                 </div>
               </a>
 
@@ -263,7 +296,7 @@ export function ContactSection() {
 
               {/* LinkedIn */}
               <a
-                href="https://linkedin.com/in/alfanjanuar"
+                href="https://bit.ly/alfan-januar"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-4 p-3 border border-[#E5E7EB] hover:border-[#64748B] bg-white rounded-[6px] hover:bg-[#F8FAFC] text-[#020817] transition-all group"
@@ -273,13 +306,13 @@ export function ContactSection() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <span className="block text-[12px] text-[#64748B] font-bold uppercase tracking-wider">LinkedIn</span>
-                  <span className="block text-[14px] sm:text-[16px] font-medium truncate">linkedin.com/in/alfanjanuar</span>
+                  <span className="block text-[14px] sm:text-[16px] font-medium truncate">bit.ly/alfan-januar</span>
                 </div>
               </a>
 
               {/* Instagram */}
               <a
-                href="https://instagram.com/alfanjanuar"
+                href="https://www.instagram.com/fanllyl/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-4 p-3 border border-[#E5E7EB] hover:border-[#64748B] bg-white rounded-[6px] hover:bg-[#F8FAFC] text-[#020817] transition-all group"
@@ -289,23 +322,23 @@ export function ContactSection() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <span className="block text-[12px] text-[#64748B] font-bold uppercase tracking-wider">Instagram</span>
-                  <span className="block text-[14px] sm:text-[16px] font-medium truncate">instagram.com/alfanjanuar</span>
+                  <span className="block text-[14px] sm:text-[16px] font-medium truncate">instagram.com/fanllyl</span>
                 </div>
               </a>
 
               {/* X */}
               <a
-                href="https://x.com/alfanjanuar"
+                href="https://x.com/fanlleys"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-4 p-3 border border-[#E5E7EB] hover:border-[#64748B] bg-white rounded-[6px] hover:bg-[#F8FAFC] text-[#020817] transition-all group"
               >
                 <div className="p-2 bg-[#F1F5F9] text-[#020817] rounded-lg">
-                  <Twitter className="w-5 h-5" />
+                  <XIcon className="w-5 h-5" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <span className="block text-[12px] text-[#64748B] font-semibold uppercase tracking-wider">X / Twitter</span>
-                  <span className="block text-[14px] sm:text-[16px] font-medium truncate">x.com/alfanjanuar</span>
+                  <span className="block text-[12px] text-[#64748B] font-semibold uppercase tracking-wider">X</span>
+                  <span className="block text-[14px] sm:text-[16px] font-medium truncate">x.com/fanlleys</span>
                 </div>
               </a>
             </div>

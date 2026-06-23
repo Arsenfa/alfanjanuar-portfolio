@@ -1,12 +1,23 @@
 import React from 'react';
-import { Github, Linkedin, Instagram, Twitter, ChevronDown } from 'lucide-react';
+import { Github, Linkedin, Instagram } from 'lucide-react';
+import { XIcon } from './XIcon';
+import { Mode } from '../types';
 
 interface HeroProps {
+  mode: Mode;
+  role: string;
+  tagline: string;
+  onModeChange: (mode: Mode) => void;
   onViewWorkClick: () => void;
   onGetInTouchClick: () => void;
 }
 
-export function Hero({ onViewWorkClick, onGetInTouchClick }: HeroProps) {
+const MODES: { id: Mode; label: string }[] = [
+  { id: 'developer', label: 'Developer' },
+  { id: 'sales', label: 'Sales' },
+];
+
+export function Hero({ mode, role, tagline, onModeChange, onViewWorkClick, onGetInTouchClick }: HeroProps) {
   return (
     <section
       id="home"
@@ -15,6 +26,28 @@ export function Hero({ onViewWorkClick, onGetInTouchClick }: HeroProps) {
       {/* Decorative floating accent */}
       <div className="absolute top-1/4 left-1/10 w-24 h-24 bg-[#E2E8F0]/30 rounded-full blur-3xl -z-10"></div>
       <div className="absolute bottom-1/4 right-1/10 w-32 h-32 bg-[#F1F5F9]/40 rounded-full blur-3xl -z-10"></div>
+
+      {/* Mode toggle: Developer / Sales */}
+      <div
+        role="tablist"
+        aria-label="Choose which portfolio to view"
+        className="animate-fade-slide-up inline-flex items-center gap-1 rounded-full border border-[#E2E8F0] bg-[#F8FAFC] p-1 mb-8"
+        style={{ animationDelay: '0s' }}
+      >
+        {MODES.map((m) => (
+          <button
+            key={m.id}
+            role="tab"
+            aria-selected={mode === m.id}
+            onClick={() => onModeChange(m.id)}
+            className={`px-5 py-1.5 rounded-full text-sm font-medium transition-colors cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-[#020817] focus:ring-offset-2 ${
+              mode === m.id ? 'bg-[#020817] text-white' : 'text-[#64748B] hover:text-[#020817]'
+            }`}
+          >
+            {m.label}
+          </button>
+        ))}
+      </div>
 
       {/* Hero Headline Group */}
       <div className="max-w-[800px] flex flex-col gap-4">
@@ -29,14 +62,14 @@ export function Hero({ onViewWorkClick, onGetInTouchClick }: HeroProps) {
           className="animate-fade-slide-up text-[#020817] text-xl sm:text-2xl md:text-3xl font-semibold tracking-tight"
           style={{ animationDelay: '0.25s' }}
         >
-          Frontend & Mobile Developer
+          {role}
         </h2>
 
         <p
           className="animate-fade-slide-up text-[#64748B] text-base sm:text-lg md:text-xl font-normal leading-relaxed mt-4"
           style={{ animationDelay: '0.4s' }}
         >
-          A frontend & mobile developer focused on building clean, performant, and user-friendly interfaces for web and mobile. I turn UI/UX designs into production-ready frontends with modern technologies.
+          {tagline}
         </p>
       </div>
 
@@ -74,7 +107,7 @@ export function Hero({ onViewWorkClick, onGetInTouchClick }: HeroProps) {
           <Github className="w-5 h-5" />
         </a>
         <a
-          href="https://linkedin.com/in/alfanjanuar"
+          href="https://bit.ly/alfan-januar"
           target="_blank"
           rel="noopener noreferrer"
           className="hover-scale-lg p-2 text-[#020817] hover:bg-[#F8FAFC] hover:text-[#0F172A] active:bg-[#F1F5F9] rounded-[6px] transition-colors"
@@ -83,7 +116,7 @@ export function Hero({ onViewWorkClick, onGetInTouchClick }: HeroProps) {
           <Linkedin className="w-5 h-5" />
         </a>
         <a
-          href="https://instagram.com/alfanjanuar"
+          href="https://www.instagram.com/fanllyl/"
           target="_blank"
           rel="noopener noreferrer"
           className="hover-scale-lg p-2 text-[#020817] hover:bg-[#F8FAFC] hover:text-[#0F172A] active:bg-[#F1F5F9] rounded-[6px] transition-colors"
@@ -92,24 +125,15 @@ export function Hero({ onViewWorkClick, onGetInTouchClick }: HeroProps) {
           <Instagram className="w-5 h-5" />
         </a>
         <a
-          href="https://x.com/alfanjanuar"
+          href="https://x.com/fanlleys"
           target="_blank"
           rel="noopener noreferrer"
           className="hover-scale-lg p-2 text-[#020817] hover:bg-[#F8FAFC] hover:text-[#0F172A] active:bg-[#F1F5F9] rounded-[6px] transition-colors"
-          title="X (Twitter) Profile"
+          title="X Profile"
         >
-          <Twitter className="w-5 h-5" />
+          <XIcon className="w-5 h-5" />
         </a>
       </div>
-
-      {/* Chevron down arrow indicator linking to next container */}
-      <button
-        onClick={onViewWorkClick}
-        className="hover-scale mt-16 text-[#64748B] hover:text-[#020817] transition-colors duration-200 cursor-pointer animate-bounce"
-        aria-label="Scroll context down"
-      >
-        <ChevronDown className="w-6 h-6" />
-      </button>
     </section>
   );
 }

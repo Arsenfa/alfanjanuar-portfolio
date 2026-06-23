@@ -1,13 +1,16 @@
-import React, { useState, useCallback, useMemo, lazy, Suspense, memo } from 'react';
+import React, { useState, useCallback, lazy, Suspense, memo } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
+import { AboutSection } from './components/AboutSection';
+import { AvailabilityCTA } from './components/AvailabilityCTA';
 import { ProjectCard } from './components/ProjectCard';
 import { ExperienceSection as ExperienceSectionRaw } from './components/ExperienceSection';
 import { TechStackSection as TechStackSectionRaw } from './components/TechStackSection';
 import { ContactSection as ContactSectionRaw } from './components/ContactSection';
-import { projectsData } from './data';
-import { Project } from './types';
-import { Github, Linkedin, ArrowUp, Instagram, Twitter } from 'lucide-react';
+import { contentByMode } from './data';
+import { Project, Mode, ProjectGroup } from './types';
+import { Github, Linkedin, ArrowUp, Instagram } from 'lucide-react';
+import { XIcon } from './components/XIcon';
 import { useInView } from './hooks/useInView';
 
 const ProjectModal = lazy(() =>
@@ -22,21 +25,84 @@ const ExperienceSection = memo(ExperienceSectionRaw);
 const TechStackSection = memo(TechStackSectionRaw);
 const ContactSection = memo(ContactSectionRaw);
 
+const MODE_STORAGE_KEY = 'portfolio_mode';
+
+function isMode(value: unknown): value is Mode {
+  return value === 'developer' || value === 'sales';
+}
+
+function readInitialMode(): Mode {
+  if (typeof window === 'undefined') return 'developer';
+  try {
+    const fromUrl = new URLSearchParams(window.location.search).get('mode');
+    if (isMode(fromUrl)) return fromUrl;
+    const stored = localStorage.getItem(MODE_STORAGE_KEY);
+    if (isMode(stored)) return stored;
+  } catch {
+    // ignore storage/URL access errors
+  }
+  return 'developer';
+}
+
+interface ProjectGroupSectionProps {
+  group: ProjectGroup;
+  onDetailClick: (project: Project) => void;
+  onHover: () => void;
+  key?: React.Key;
+}
+
+function ProjectGroupSection({ group, onDetailClick, onHover }: ProjectGroupSectionProps) {
+  const { ref, isInView } = useInView({ rootMargin: '-100px' });
+
+  const gridCols =
+    group.cols === 2
+      ? 'grid-cols-1 md:grid-cols-2 max-w-5xl mx-auto'
+      : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3';
+
+  return (
+    <div ref={ref} className={`reveal ${isInView ? 'visible' : ''} space-y-10`}>
+      <div className="text-center">
+        <h2 className="text-[#020817] text-3xl sm:text-4xl font-bold tracking-tight">
+          {group.heading}
+        </h2>
+        <p className="text-[#64748B] text-[16px] font-normal leading-[24px] mt-1.5 max-w-2xl mx-auto">
+          {group.subtitle}
+        </p>
+        <div className="w-16 h-1 bg-[#020817] mt-4 rounded-full mx-auto"></div>
+      </div>
+
+      <div className={`grid ${gridCols} gap-8`}>
+        {group.projects.map((project) => (
+          <ProjectCard
+            key={project.id}
+            project={project}
+            onDetailClick={onDetailClick}
+            onHover={onHover}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
+  const [mode, setMode] = useState<Mode>(readInitialMode);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isModalClosing, setIsModalClosing] = useState(false);
 
-  const realProjects = useMemo(
-    () => projectsData.filter((p) => p.category === 'real'),
-    [],
-  );
-  const portfolioProjects = useMemo(
-    () => projectsData.filter((p) => p.category === 'portfolio'),
-    [],
-  );
+  const content = contentByMode[mode];
 
-  const realSection = useInView({ rootMargin: '-100px' });
-  const portfolioSection = useInView({ rootMargin: '-100px' });
+  const changeMode = useCallback((next: Mode) => {
+    setMode(next);
+    try {
+      localStorage.setItem(MODE_STORAGE_KEY, next);
+      const url = new URL(window.location.href);
+      url.searchParams.set('mode', next);
+      window.history.replaceState({}, '', url);
+    } catch {
+      // ignore storage/URL access errors
+    }
+  }, []);
 
   const handleOpenModal = useCallback(
     (project: Project) => setSelectedProject(project),
@@ -73,86 +139,53 @@ export default function App() {
       {/* Main Container Content */}
       <main className="flex-1">
         {/* Hero Section */}
-        <Hero onViewWorkClick={scrollToProjects} onGetInTouchClick={scrollToContact} />
+        <Hero
+          mode={mode}
+          role={content.hero.role}
+          tagline={content.hero.tagline}
+          onModeChange={changeMode}
+          onViewWorkClick={scrollToProjects}
+          onGetInTouchClick={scrollToContact}
+        />
 
         {/* Divider standard spacing */}
         <hr className="max-w-[1440px] mx-auto border-[#E2E8F0]" />
 
+        {/* About Section */}
+        <AboutSection content={content.about} onHireClick={scrollToContact} />
+
+        {/* Divider */}
+        <hr className="max-w-[1440px] mx-auto border-[#E2E8F0]" />
+
         {/* Projects Section */}
         <section id="projects" className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8 py-16 space-y-20">
-
-          {/* Sub-section 1: Real Projects */}
-          <div
-            ref={realSection.ref}
-            className={`reveal ${realSection.isInView ? 'visible' : ''} space-y-10`}
-          >
-            <div>
-              <h2 className="text-[#020817] text-3xl sm:text-4xl font-bold tracking-tight">
-                Real Projects
-              </h2>
-              <p className="text-[#64748B] text-[16px] font-normal leading-[24px] mt-1.5">
-                Real projects I built during my internship at PT Akur Pratama (Yogya Center).
-              </p>
-              <div className="w-16 h-1 bg-[#020817] mt-3 rounded-full"></div>
-            </div>
-
-            {/* Grid Layout (2 projects mapped) */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-              {realProjects.map((project) => (
-                <ProjectCard
-                  key={project.id}
-                  project={project}
-                  onDetailClick={handleOpenModal}
-                  onHover={preloadModal}
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* Sub-section 2: Portfolio Projects */}
-          <div
-            ref={portfolioSection.ref}
-            className={`reveal ${portfolioSection.isInView ? 'visible' : ''} space-y-10`}
-          >
-            <div>
-              <h2 className="text-[#020817] text-3xl sm:text-4xl font-bold tracking-tight">
-                Portfolio Projects
-              </h2>
-              <p className="text-[#64748B] text-[16px] font-normal leading-[24px] mt-1.5">
-                Here are some of the projects I've worked on. Each one represents a unique challenge and an opportunity to learn and grow as a developer.
-              </p>
-              <div className="w-16 h-1 bg-[#020817] mt-3 rounded-full"></div>
-            </div>
-
-            {/* Grid Layout (3 projects mapped) */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {portfolioProjects.map((project) => (
-                <ProjectCard
-                  key={project.id}
-                  project={project}
-                  onDetailClick={handleOpenModal}
-                  onHover={preloadModal}
-                />
-              ))}
-            </div>
-          </div>
-
+          {content.projectGroups.map((group) => (
+            <ProjectGroupSection
+              key={group.id}
+              group={group}
+              onDetailClick={handleOpenModal}
+              onHover={preloadModal}
+            />
+          ))}
         </section>
 
         {/* Divider */}
         <hr className="max-w-[1440px] mx-auto border-[#E2E8F0]" />
 
         {/* Experience Section */}
-        <ExperienceSection />
+        <ExperienceSection experiences={content.experiences} />
 
         {/* Divider */}
         <hr className="max-w-[1440px] mx-auto border-[#E2E8F0]" />
 
-        {/* Tech Stack Skills Section */}
-        <TechStackSection />
+        {/* Tech Stack / Skills Section */}
+        <TechStackSection content={content.techStack} />
 
         {/* Divider */}
         <hr className="max-w-[1440px] mx-auto border-[#E2E8F0]" />
+
+        {/* Availability CTA band */}
+        <AvailabilityCTA content={content.availability} onContactClick={scrollToContact} />
 
         {/* Get in Touch Section */}
         <ContactSection />
@@ -179,7 +212,7 @@ export default function App() {
               <Github className="w-5 h-5" />
             </a>
             <a
-              href="https://linkedin.com/in/alfanjanuar"
+              href="https://bit.ly/alfan-januar"
               target="_blank"
               rel="noopener noreferrer"
               className="hover-scale-lg p-1.5 text-[#64748B] hover:text-[#020817] transition-colors"
@@ -188,7 +221,7 @@ export default function App() {
               <Linkedin className="w-5 h-5" />
             </a>
             <a
-              href="https://instagram.com/alfanjanuar"
+              href="https://www.instagram.com/fanllyl/"
               target="_blank"
               rel="noopener noreferrer"
               className="hover-scale-lg p-1.5 text-[#64748B] hover:text-[#020817] transition-colors"
@@ -197,13 +230,13 @@ export default function App() {
               <Instagram className="w-5 h-5" />
             </a>
             <a
-              href="https://x.com/alfanjanuar"
+              href="https://x.com/fanlleys"
               target="_blank"
               rel="noopener noreferrer"
               className="hover-scale-lg p-1.5 text-[#64748B] hover:text-[#020817] transition-colors"
               title="Alfan on X"
             >
-              <Twitter className="w-5 h-5" />
+              <XIcon className="w-5 h-5" />
             </a>
 
             {/* Scroll back to Top trigger */}

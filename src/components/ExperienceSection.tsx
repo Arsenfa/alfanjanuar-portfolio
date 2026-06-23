@@ -1,25 +1,29 @@
 import React from 'react';
-import { experiencesData } from '../data';
+import { Experience } from '../types';
 import { Calendar, MapPin, Briefcase } from 'lucide-react';
 import { useInView } from '../hooks/useInView';
 
-export function ExperienceSection() {
+interface ExperienceSectionProps {
+  experiences: Experience[];
+}
+
+export function ExperienceSection({ experiences }: ExperienceSectionProps) {
   const { ref, isInView } = useInView({ rootMargin: '-100px' });
 
   return (
     <section id="experience" className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8 py-16">
       <div ref={ref} className={`reveal ${isInView ? 'visible' : ''}`}>
         {/* Section Header */}
-        <div className="mb-12">
+        <div className="mb-12 text-center">
           <h2 className="text-[#020817] text-3xl sm:text-4xl font-bold tracking-tight">
             Work Experience
           </h2>
-          <div className="w-16 h-1 bg-[#020817] mt-3 rounded-full"></div>
+          <div className="w-16 h-1 bg-[#020817] mt-4 rounded-full mx-auto"></div>
         </div>
 
         {/* Experience Timeline Grid container */}
         <div className="space-y-8">
-          {experiencesData.map((exp) => (
+          {experiences.map((exp) => (
             <div
               key={exp.id}
               className="bg-white border border-[#E5E7EB] rounded-[8px] p-6 md:p-8 shadow-[rgba(0,0,0,0.05)_0px_1px_2px_0px] space-y-6 hover:shadow-[rgba(0,0,0,0.08)_0px_4px_12px_0px] transition-shadow duration-300"
@@ -75,7 +79,7 @@ export function ExperienceSection() {
               {/* Technologies utilized labels */}
               <div className="space-y-2.5 pt-2">
                 <span className="block text-[#64748B] text-[14px] font-semibold uppercase tracking-wider">
-                  Utilized Technologies
+                  Skills & Tools
                 </span>
                 <div className="flex flex-wrap gap-2">
                   {exp.tags.map((tag) => (

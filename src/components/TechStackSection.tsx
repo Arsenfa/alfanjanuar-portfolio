@@ -1,6 +1,6 @@
 import React from 'react';
-import { techStackData } from '../data';
-import { Monitor, Palette, Code2, GitFork, Smartphone, Cpu, HelpCircle } from 'lucide-react';
+import { TechStackContent } from '../types';
+import { Monitor, Palette, Code2, GitFork, Smartphone, Cpu, Target, Users, MessageSquare, Briefcase, TrendingUp, HelpCircle } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { useInView } from '../hooks/useInView';
 
@@ -11,29 +11,38 @@ const iconMap: Record<string, LucideIcon> = {
   GitFork,
   Smartphone,
   Cpu,
+  Target,
+  Users,
+  MessageSquare,
+  Briefcase,
+  TrendingUp,
 };
 
-export function TechStackSection() {
+interface TechStackSectionProps {
+  content: TechStackContent;
+}
+
+export function TechStackSection({ content }: TechStackSectionProps) {
   const { ref, isInView } = useInView({ rootMargin: '-100px' });
 
   return (
     <section id="skills" className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8 py-16 bg-[#F8FAFC]">
       <div ref={ref} className={`reveal ${isInView ? 'visible' : ''} space-y-12`}>
         {/* Section Header */}
-        <div>
+        <div className="text-center">
           <h2 className="text-[#020817] text-3xl sm:text-4xl font-bold tracking-tight">
-            Tech Stack
+            {content.heading}
           </h2>
-          <p className="text-[#64748B] text-[16px] font-normal leading-[24px] mt-1.5">
-            Technologies, tools, and AI workflows I use to build responsive web and mobile applications.
+          <p className="text-[#64748B] text-[16px] font-normal leading-[24px] mt-1.5 max-w-2xl mx-auto">
+            {content.subtitle}
           </p>
-          <div className="w-16 h-1 bg-[#020817] mt-3 rounded-full"></div>
+          <div className="w-16 h-1 bg-[#020817] mt-4 rounded-full mx-auto"></div>
         </div>
 
         {/* Categories Grid - Responsive layout */}
         {/* Mobile: 1 col, Tablet: 2 cols, Desktop: 3 cols */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {techStackData.map((category) => {
+          {content.categories.map((category) => {
             // Resolve icon from explicit map to preserve tree-shaking
             const IconComponent = iconMap[category.icon] ?? HelpCircle;
 

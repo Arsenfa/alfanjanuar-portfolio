@@ -1,7 +1,7 @@
 import React from 'react';
 import { Project } from '../types';
 import { ProjectMockup } from './ProjectMockup';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ExternalLink, Github } from 'lucide-react';
 
 interface ProjectCardProps {
   project: Project;
@@ -19,7 +19,7 @@ export function ProjectCard({ project, onDetailClick, onHover }: ProjectCardProp
       {/* Visual Mockup Banner Container */}
       <div className="relative aspect-video w-full h-[220px] overflow-hidden border-b border-[#E5E7EB]">
         <div className="w-full h-full transition-transform duration-500 ease-out group-hover:scale-105">
-          <ProjectMockup type={project.mockupType} />
+          <ProjectMockup type={project.mockupType} title={project.title} />
         </div>
         {/* Gradient overlay on hover */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#020817]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
@@ -36,7 +36,7 @@ export function ProjectCard({ project, onDetailClick, onHover }: ProjectCardProp
 
             {/* Category tag */}
             <span className="bg-[#F1F5F9] text-[#020817] text-[14px] font-medium px-3 py-1 rounded-full whitespace-nowrap select-none">
-              {project.isInternship ? 'Internship Project' : 'Personal Project'}
+              {project.badgeLabel ?? (project.isInternship ? 'Internship Project' : 'Personal Project')}
             </span>
           </div>
 
@@ -58,8 +58,34 @@ export function ProjectCard({ project, onDetailClick, onHover }: ProjectCardProp
           </div>
         </div>
 
-        {/* View Details Primary Trigger Button */}
-        <div className="pt-6 mt-auto">
+        {/* Quick links + View Details Primary Trigger Button */}
+        <div className="pt-6 mt-auto space-y-3">
+          {(project.previewUrl || project.githubUrl) && (
+            <div className="flex items-center gap-2">
+              {project.previewUrl && (
+                <a
+                  href={project.previewUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover-scale flex-1 inline-flex items-center justify-center gap-1.5 bg-white text-[#020817] border border-[#E5E7EB] hover:border-[#64748B] hover:bg-[#F8FAFC] text-[14px] font-medium py-2.5 px-3 rounded-[6px] transition-colors focus:outline-hidden focus:ring-2 focus:ring-[#020817] focus:ring-offset-2"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  Live Demo
+                </a>
+              )}
+              {project.githubUrl && (
+                <a
+                  href={project.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover-scale flex-1 inline-flex items-center justify-center gap-1.5 bg-white text-[#020817] border border-[#E5E7EB] hover:border-[#64748B] hover:bg-[#F8FAFC] text-[14px] font-medium py-2.5 px-3 rounded-[6px] transition-colors focus:outline-hidden focus:ring-2 focus:ring-[#020817] focus:ring-offset-2"
+                >
+                  <Github className="w-4 h-4" />
+                  Code
+                </a>
+              )}
+            </div>
+          )}
           <button
             onClick={() => onDetailClick(project)}
             onFocus={onHover}

@@ -1,11 +1,12 @@
 import React from 'react';
 
 interface MockupProps {
-  type: 'warehouse' | 'checkout' | 'steam' | 'telegram' | 'kde';
+  type: 'warehouse' | 'checkout' | 'steam' | 'telegram' | 'kde' | 'sales';
   minimal?: boolean;
+  title?: string;
 }
 
-export function ProjectMockup({ type, minimal }: MockupProps) {
+export function ProjectMockup({ type, minimal, title }: MockupProps) {
   if (type === 'warehouse') {
     return (
       <div className={`relative w-full h-full overflow-hidden flex items-center justify-between p-6 md:p-8 select-none ${minimal ? 'bg-white' : 'bg-indigo-600'}`}>
@@ -344,6 +345,72 @@ export function ProjectMockup({ type, minimal }: MockupProps) {
             <span className="w-2.5 h-2.5 rounded-full hover:scale-125 transition-transform flex items-center justify-center text-[5px] font-bold">▶</span>
             <span className="w-2.5 h-2.5 rounded-full hover:scale-125 transition-transform flex items-center justify-center text-[5px] font-bold">﹢</span>
             <span className="w-2.5 h-2.5 rounded-full hover:scale-125 transition-transform flex items-center justify-center text-[5px] font-bold">🖪</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (type === 'sales') {
+    return (
+      <div className={`relative w-full h-full overflow-hidden flex items-center justify-between p-6 md:p-8 select-none ${minimal ? 'bg-white' : 'bg-sky-600'}`}>
+        {/* Abstract shapes */}
+        <div className={`absolute right-0 top-0 w-2/3 h-full skew-x-12 transform origin-right ${minimal ? 'bg-slate-50 opacity-40' : 'bg-sky-500 opacity-20'}`}></div>
+        <div className={`absolute -bottom-10 -left-10 w-48 h-48 rounded-full blur-2xl ${minimal ? 'bg-slate-100 opacity-20' : 'bg-sky-400 opacity-30'}`}></div>
+
+        {/* Left: Text */}
+        <div className="relative z-10 flex flex-col justify-end h-full max-w-[50%]">
+          <div className={`rounded-lg p-2.5 w-fit mb-3 border ${minimal ? 'bg-slate-50 border-[#E2E8F0] text-[#020817]' : 'bg-white/20 border-white/20 text-white'}`}>
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 17l6-6 4 4 8-8m0 0h-5m5 0v5" />
+            </svg>
+          </div>
+          <h3 className={`text-xl md:text-2xl font-bold tracking-tight leading-tight ${minimal ? 'text-[#020817]' : 'text-white'}`}>
+            {title || 'Sales Highlight'}
+          </h3>
+        </div>
+
+        {/* Right: Sales pipeline / metrics panel */}
+        <div className={`relative z-10 w-[45%] h-[85%] rounded-lg border shadow-xs p-3 flex flex-col gap-2 ${minimal ? 'bg-white border-[#E5E7EB]' : 'bg-[#0F172A] border-slate-700'}`}>
+          {/* Header */}
+          <div className={`flex items-center justify-between border-b pb-2 ${minimal ? 'border-slate-100' : 'border-slate-800'}`}>
+            <span className={`text-[8px] font-bold tracking-wider ${minimal ? 'text-[#020817]' : 'text-sky-300'}`}>PIPELINE</span>
+            <span className={`text-[7px] font-mono ${minimal ? 'text-[#64748B]' : 'text-slate-500'}`}>Q4</span>
+          </div>
+
+          {/* Stat tiles */}
+          <div className="grid grid-cols-2 gap-1.5">
+            <div className={`border rounded p-1.5 ${minimal ? 'bg-slate-50 border-slate-200' : 'bg-sky-950/40 border-sky-500/30'}`}>
+              <span className={`block text-[7px] font-medium ${minimal ? 'text-[#64748B]' : 'text-sky-300'}`}>DEALS WON</span>
+              <span className={`block text-[11px] font-bold font-mono ${minimal ? 'text-[#020817]' : 'text-sky-100'}`}>—</span>
+            </div>
+            <div className={`border rounded p-1.5 ${minimal ? 'bg-slate-50 border-slate-200' : 'bg-emerald-950/40 border-emerald-500/30'}`}>
+              <span className={`block text-[7px] font-medium ${minimal ? 'text-[#64748B]' : 'text-emerald-300'}`}>TARGET</span>
+              <span className={`block text-[11px] font-bold font-mono ${minimal ? 'text-[#020817]' : 'text-emerald-100'}`}>—</span>
+            </div>
+          </div>
+
+          {/* Pipeline funnel bars */}
+          <div className={`flex-1 rounded border p-2 flex flex-col gap-1.5 justify-center ${minimal ? 'bg-slate-50 border-slate-200' : 'bg-slate-900 border-slate-800'}`}>
+            {[
+              { label: 'Leads', w: 'w-[92%]' },
+              { label: 'Qualified', w: 'w-[70%]' },
+              { label: 'Proposal', w: 'w-[48%]' },
+              { label: 'Closed', w: 'w-[30%]' },
+            ].map((row) => (
+              <div key={row.label} className="flex items-center gap-1.5">
+                <span className={`text-[6px] font-mono w-9 ${minimal ? 'text-[#64748B]' : 'text-slate-400'}`}>{row.label}</span>
+                <div className={`flex-1 h-1.5 rounded-sm overflow-hidden ${minimal ? 'bg-slate-200' : 'bg-slate-800'}`}>
+                  <div className={`${row.w} h-full rounded-sm ${minimal ? 'bg-[#020817]' : 'bg-sky-400'}`}></div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Footer row */}
+          <div className={`flex justify-between items-center text-[6.5px] font-mono ${minimal ? 'text-[#64748B]' : 'text-slate-500'}`}>
+            <span>WIN RATE</span>
+            <span className={minimal ? 'text-[#020817] font-semibold' : 'text-sky-400'}>—</span>
           </div>
         </div>
       </div>

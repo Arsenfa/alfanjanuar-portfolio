@@ -1,7 +1,7 @@
 import React from 'react';
 import { Project } from '../types';
 import { ProjectMockup } from './ProjectMockup';
-import { CheckCircle2 } from 'lucide-react';
+import { CheckCircle2, ExternalLink, Github } from 'lucide-react';
 
 interface ProjectModalProps {
   project: Project | null;
@@ -10,14 +10,14 @@ interface ProjectModalProps {
 }
 
 export function ProjectModal({ project, onClose, isClosing }: ProjectModalProps) {
-  if (!project) return null;
-
   React.useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => {
       document.body.style.overflow = '';
     };
   }, []);
+
+  if (!project) return null;
 
   // Custom metadata for each project to present beautiful line gaps and specific high-contrast icon boxes
   const projectMeta = {
@@ -163,7 +163,7 @@ export function ProjectModal({ project, onClose, isClosing }: ProjectModalProps)
                   </svg>
                 </div>
               ) : (
-                <ProjectMockup type={project.mockupType} minimal={true} />
+                <ProjectMockup type={project.mockupType} minimal={true} title={project.title} />
               )}
             </div>
           </div>
@@ -180,7 +180,7 @@ export function ProjectModal({ project, onClose, isClosing }: ProjectModalProps)
               <p className="text-[#64748B] font-medium mt-[4px]">{project.subtitle}</p>
             </div>
             <span className="px-4 py-1 bg-white border border-[#E5E7EB] text-[#64748B] text-[14px] font-medium rounded-full shadow-[rgba(0,0,0,0.02)_0px_1px_2px_0px] whitespace-nowrap">
-              {project.isInternship ? 'Internship Work' : 'Side Project'}
+              {project.badgeLabel ?? (project.isInternship ? 'Internship Work' : 'Side Project')}
             </span>
           </div>
 
@@ -204,7 +204,7 @@ export function ProjectModal({ project, onClose, isClosing }: ProjectModalProps)
               /* Inner card padding: 24px */
               <div className="bg-[#F8FAFC] border border-[#E5E7EB] rounded-[8px] p-[24px] shadow-[rgba(0,0,0,0.02)_0px_1px_2px_0px]">
                 {/* Section titles (PROJECT OVERVIEW, etc): font-size 12px, font-weight 600, letter-spacing 0.05em, color #64748B, text-transform uppercase */}
-                <h4 className="text-[12px] font-semibold tracking-[0.05em] text-[#64748B] uppercase mb-[16px] font-sans">Key Engineering Challenges</h4>
+                <h4 className="text-[12px] font-semibold tracking-[0.05em] text-[#64748B] uppercase mb-[16px] font-sans">{project.challengesLabel ?? 'Key Engineering Challenges'}</h4>
                 {/* Gap between card title and bullet list: 16px, gap between each bullet item: 12px */}
                 <ul className="space-y-[12px] mt-[16px]">
                   {project.challenges.map((challenge, idx) => (
@@ -222,7 +222,7 @@ export function ProjectModal({ project, onClose, isClosing }: ProjectModalProps)
               /* Inner card padding: 24px */
               <div className="bg-[#F8FAFC] border border-[#E5E7EB] rounded-[8px] p-[24px] shadow-[rgba(0,0,0,0.02)_0px_1px_2px_0px]">
                 {/* Section titles (PROJECT OVERVIEW, etc): font-size 12px, font-weight 600, letter-spacing 0.05em, color #64748B, text-transform uppercase */}
-                <h4 className="text-[12px] font-semibold tracking-[0.05em] text-[#64748B] uppercase mb-[16px] font-sans">Key Deliverables &amp; Results</h4>
+                <h4 className="text-[12px] font-semibold tracking-[0.05em] text-[#64748B] uppercase mb-[16px] font-sans">{project.achievementsLabel ?? 'Key Deliverables & Results'}</h4>
                 {/* Gap between card title and bullet list: 16px, gap between each bullet item: 12px */}
                 <ul className="space-y-[12px] mt-[16px]">
                   {project.achievements.map((achievement, idx) => (
@@ -242,7 +242,7 @@ export function ProjectModal({ project, onClose, isClosing }: ProjectModalProps)
           {/* Gap between cards section and INTEGRATED TECH STACK: 24px */}
           <div className="mt-[24px]">
             {/* Section titles (PROJECT OVERVIEW, etc): font-size 12px, font-weight 600, letter-spacing 0.05em, color #64748B, text-transform uppercase */}
-            <h3 className="text-[12px] font-semibold tracking-[0.05em] text-[#64748B] uppercase font-sans">Integrated Tech Stack</h3>
+            <h3 className="text-[12px] font-semibold tracking-[0.05em] text-[#64748B] uppercase font-sans">{project.tagsLabel ?? 'Integrated Tech Stack'}</h3>
             {/* Gap between tech stack title and tags: 12px */}
             <div className="flex flex-wrap gap-2 mt-[12px]">
               {project.tags.map((tag) => (
@@ -258,9 +258,33 @@ export function ProjectModal({ project, onClose, isClosing }: ProjectModalProps)
         </section>
         {/* END: Content Section */}
 
-        {/* Footer Close Details Button */}
-        {/* Gap between tags and Close Details button: 32px */}
-        <div className="mt-[32px] flex justify-end">
+        {/* Footer: external links + Close Details button */}
+        {/* Gap between tags and footer: 32px */}
+        <div className="mt-[32px] flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
+          <div className="flex flex-wrap gap-3">
+            {project.previewUrl && (
+              <a
+                href={project.previewUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover-scale inline-flex items-center justify-center gap-2 bg-white text-[#020817] border border-[#E5E7EB] hover:border-[#64748B] hover:bg-[#F8FAFC] text-[14px] font-semibold py-3 px-6 rounded-[6px] transition-colors focus:outline-hidden focus:ring-2 focus:ring-[#020817] focus:ring-offset-2"
+              >
+                <ExternalLink className="w-4 h-4" />
+                Live Demo
+              </a>
+            )}
+            {project.githubUrl && (
+              <a
+                href={project.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover-scale inline-flex items-center justify-center gap-2 bg-white text-[#020817] border border-[#E5E7EB] hover:border-[#64748B] hover:bg-[#F8FAFC] text-[14px] font-semibold py-3 px-6 rounded-[6px] transition-colors focus:outline-hidden focus:ring-2 focus:ring-[#020817] focus:ring-offset-2"
+              >
+                <Github className="w-4 h-4" />
+                Source Code
+              </a>
+            )}
+          </div>
           <button
             onClick={onClose}
             className="hover-scale bg-[#020817] hover:opacity-90 text-white text-[14px] font-semibold py-3 px-8 rounded-[6px] transition-all cursor-pointer shadow-[rgba(0,0,0,0.05)_0px_1px_2px_0px]"
