@@ -34,6 +34,15 @@ export interface Experience {
   tags: string[];
 }
 
+export interface Education {
+  id: string;
+  school: string;
+  program: string;
+  location?: string;
+  period: string;
+  gpa?: string;
+}
+
 export interface TechCategory {
   id: string;
   title: string;
@@ -72,6 +81,7 @@ export interface ModeContent {
   about: AboutContent;
   projectGroups: ProjectGroup[];
   experiences: Experience[];
+  education: Education[];
   techStack: TechStackContent;
   availability: AvailabilityContent;
 }

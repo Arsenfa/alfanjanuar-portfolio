@@ -1,4 +1,19 @@
-import { Mode, ModeContent, Project } from './types';
+import { Education, Mode, ModeContent, Project } from './types';
+
+/* ------------------------------------------------------------------ */
+/* SHARED CONTENT (identical across both modes)                        */
+/* ------------------------------------------------------------------ */
+
+const education: Education[] = [
+  {
+    id: 'smk-medikacom',
+    school: 'SMKS MedikaCom Bandung',
+    program: 'Software Engineering (RPL)',
+    location: 'Bandung, Indonesia',
+    period: 'Jul 2023 - May 2026',
+    gpa: '87.40 / 100.00',
+  },
+];
 
 /* ------------------------------------------------------------------ */
 /* DEVELOPER MODE                                                      */
@@ -179,6 +194,7 @@ const developerContent: ModeContent = {
       tags: ['HTML', 'CSS', 'JavaScript', 'UI/UX', 'Figma', 'Vercel', 'Git']
     }
   ],
+  education,
   techStack: {
     heading: 'Tech Stack',
     subtitle: 'Technologies, tools, and AI workflows I use to build responsive web and mobile applications.',
@@ -351,6 +367,7 @@ const salesContent: ModeContent = {
       tags: ['Sales', 'Negotiation', 'Customer Service', 'Communication', 'Transaction Management']
     }
   ],
+  education,
   techStack: {
     heading: 'Sales Toolkit',
     subtitle: 'The skills and strengths I rely on to sell, build relationships, and keep customers happy.',

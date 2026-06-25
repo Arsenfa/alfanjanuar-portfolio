@@ -5,6 +5,7 @@ import { AboutSection } from './components/AboutSection';
 import { AvailabilityCTA } from './components/AvailabilityCTA';
 import { ProjectCard } from './components/ProjectCard';
 import { ExperienceSection as ExperienceSectionRaw } from './components/ExperienceSection';
+import { EducationSection as EducationSectionRaw } from './components/EducationSection';
 import { TechStackSection as TechStackSectionRaw } from './components/TechStackSection';
 import { ContactSection as ContactSectionRaw } from './components/ContactSection';
 import { contentByMode } from './data';
@@ -22,6 +23,7 @@ const preloadModal = () => {
 };
 
 const ExperienceSection = memo(ExperienceSectionRaw);
+const EducationSection = memo(EducationSectionRaw);
 const TechStackSection = memo(TechStackSectionRaw);
 const ContactSection = memo(ContactSectionRaw);
 
@@ -181,6 +183,12 @@ export default function App() {
 
         {/* Experience Section */}
         <ExperienceSection experiences={content.experiences} />
+
+        {/* Divider */}
+        <hr className="max-w-[1440px] mx-auto border-[#E2E8F0]" />
+
+        {/* Education Section */}
+        <EducationSection education={content.education} />
 
         {/* Divider */}
         <hr className="max-w-[1440px] mx-auto border-[#E2E8F0]" />
