@@ -316,6 +316,23 @@ const salesContent: ModeContent = {
   ],
   experiences: [
     {
+      id: 'sales-exp-pkl',
+      role: 'Retail Operations Support',
+      company: 'PT Akur Pratama (YOGYA Center)',
+      location: 'Bandung, Indonesia',
+      period: 'Jul 2025 - Jan 2026',
+      type: 'Internship',
+      descriptionTitle: 'Supported daily operations inside a nationwide supermarket and department store chain, working closely with frontline and warehouse teams.',
+      bullets: [
+        'Supported daily operations across a nationwide supermarket and department store chain, working alongside frontline and warehouse staff.',
+        'Coordinated actively with multiple divisions (warehouse, cashier, marketing) to resolve day-to-day operational issues.',
+        'Worked under strict company SOPs and time targets in a fast-paced retail environment.',
+        'Gained first-hand understanding of retail workflows, from stock handling to point-of-sale operations.',
+        'Built comfort working in large teams and adapting quickly to new processes.'
+      ],
+      tags: ['Retail Operations', 'SOP Compliance', 'Teamwork', 'Cross-Division Coordination', 'Fast-Paced Environment']
+    },
+    {
       id: 'sales-exp1',
       role: 'Freelance Sales',
       company: 'Facebook Marketplace & FJB Community',
