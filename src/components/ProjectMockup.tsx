@@ -370,47 +370,39 @@ export function ProjectMockup({ type, minimal, title }: MockupProps) {
           </h3>
         </div>
 
-        {/* Right: Sales pipeline / metrics panel */}
-        <div className={`relative z-10 w-[45%] h-[85%] rounded-lg border shadow-xs p-3 flex flex-col gap-2 ${minimal ? 'bg-white border-[#E5E7EB]' : 'bg-[#0F172A] border-slate-700'}`}>
-          {/* Header */}
-          <div className={`flex items-center justify-between border-b pb-2 ${minimal ? 'border-slate-100' : 'border-slate-800'}`}>
-            <span className={`text-[8px] font-bold tracking-wider ${minimal ? 'text-[#020817]' : 'text-sky-300'}`}>PIPELINE</span>
-            <span className={`text-[7px] font-mono ${minimal ? 'text-[#64748B]' : 'text-slate-500'}`}>Q4</span>
-          </div>
-
-          {/* Stat tiles */}
-          <div className="grid grid-cols-2 gap-1.5">
-            <div className={`border rounded p-1.5 ${minimal ? 'bg-slate-50 border-slate-200' : 'bg-sky-950/40 border-sky-500/30'}`}>
-              <span className={`block text-[7px] font-medium ${minimal ? 'text-[#64748B]' : 'text-sky-300'}`}>DEALS WON</span>
-              <span className={`block text-[11px] font-bold font-mono ${minimal ? 'text-[#020817]' : 'text-sky-100'}`}>—</span>
-            </div>
-            <div className={`border rounded p-1.5 ${minimal ? 'bg-slate-50 border-slate-200' : 'bg-emerald-950/40 border-emerald-500/30'}`}>
-              <span className={`block text-[7px] font-medium ${minimal ? 'text-[#64748B]' : 'text-emerald-300'}`}>TARGET</span>
-              <span className={`block text-[11px] font-bold font-mono ${minimal ? 'text-[#020817]' : 'text-emerald-100'}`}>—</span>
+        {/* Right: Buyer/seller chat closing into a deal — real selling activity */}
+        <div className={`relative z-10 w-[45%] h-[85%] rounded-lg border shadow-xs p-2.5 flex flex-col gap-2 ${minimal ? 'bg-white border-[#E5E7EB]' : 'bg-[#0F172A] border-slate-700'}`}>
+          {/* Chat header */}
+          <div className={`flex items-center gap-1.5 border-b pb-1.5 ${minimal ? 'border-slate-100' : 'border-slate-800'}`}>
+            <div className={`w-4 h-4 rounded-full flex items-center justify-center font-bold text-[7px] ${minimal ? 'bg-[#F1F5F9] text-[#020817]' : 'bg-sky-500/20 text-sky-200'}`}>B</div>
+            <div className="flex flex-col">
+              <span className={`text-[7.5px] font-bold leading-tight ${minimal ? 'text-[#020817]' : 'text-white'}`}>Buyer</span>
+              <span className={`text-[5.5px] ${minimal ? 'text-[#64748B]' : 'text-sky-400'}`}>online now</span>
             </div>
           </div>
 
-          {/* Pipeline funnel bars */}
-          <div className={`flex-1 rounded border p-2 flex flex-col gap-1.5 justify-center ${minimal ? 'bg-slate-50 border-slate-200' : 'bg-slate-900 border-slate-800'}`}>
-            {[
-              { label: 'Leads', w: 'w-[92%]' },
-              { label: 'Qualified', w: 'w-[70%]' },
-              { label: 'Proposal', w: 'w-[48%]' },
-              { label: 'Closed', w: 'w-[30%]' },
-            ].map((row) => (
-              <div key={row.label} className="flex items-center gap-1.5">
-                <span className={`text-[6px] font-mono w-9 ${minimal ? 'text-[#64748B]' : 'text-slate-400'}`}>{row.label}</span>
-                <div className={`flex-1 h-1.5 rounded-sm overflow-hidden ${minimal ? 'bg-slate-200' : 'bg-slate-800'}`}>
-                  <div className={`${row.w} h-full rounded-sm ${minimal ? 'bg-[#020817]' : 'bg-sky-400'}`}></div>
-                </div>
-              </div>
-            ))}
+          {/* Conversation thread */}
+          <div className="flex-1 flex flex-col gap-1.5 py-1 justify-center">
+            {/* Buyer asks */}
+            <div className={`self-start rounded-lg rounded-tl-none px-2 py-1 max-w-[88%] ${minimal ? 'bg-slate-100 border border-slate-200' : 'bg-slate-800'}`}>
+              <span className={`block text-[7px] leading-snug ${minimal ? 'text-[#0F172A]' : 'text-slate-200'}`}>Is the price still negotiable?</span>
+            </div>
+            {/* Seller replies */}
+            <div className={`self-end rounded-lg rounded-tr-none px-2 py-1 max-w-[88%] ${minimal ? 'bg-[#020817]' : 'bg-sky-600'}`}>
+              <span className="block text-[7px] leading-snug text-white">Let's meet in the middle — deal?</span>
+            </div>
+            {/* Buyer agrees */}
+            <div className={`self-start rounded-lg rounded-tl-none px-2 py-1 max-w-[88%] ${minimal ? 'bg-slate-100 border border-slate-200' : 'bg-slate-800'}`}>
+              <span className={`block text-[7px] leading-snug ${minimal ? 'text-[#0F172A]' : 'text-slate-200'}`}>Deal. Sending payment now 🤝</span>
+            </div>
           </div>
 
-          {/* Footer row */}
-          <div className={`flex justify-between items-center text-[6.5px] font-mono ${minimal ? 'text-[#64748B]' : 'text-slate-500'}`}>
-            <span>WIN RATE</span>
-            <span className={minimal ? 'text-[#020817] font-semibold' : 'text-sky-400'}>—</span>
+          {/* Deal closed confirmation */}
+          <div className={`flex items-center justify-center gap-1.5 rounded-md py-1.5 ${minimal ? 'bg-emerald-50 border border-emerald-200' : 'bg-emerald-950/40 border border-emerald-500/30'}`}>
+            <svg className={`w-3 h-3 ${minimal ? 'text-emerald-600' : 'text-emerald-400'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+            </svg>
+            <span className={`text-[7.5px] font-bold tracking-wide ${minimal ? 'text-emerald-700' : 'text-emerald-300'}`}>DEAL CLOSED</span>
           </div>
         </div>
       </div>
