@@ -27,6 +27,13 @@ const ContactSection = memo(ContactSectionRaw);
 
 const MODE_STORAGE_KEY = 'portfolio_mode';
 
+// CV file per mode — drop both PDFs into /public.
+// Falls back to the dev CV if a mode-specific file isn't present.
+const CV_BY_MODE: Record<Mode, string> = {
+  developer: '/cv-alfan-januar-dev.pdf',
+  sales: '/cv-alfan-januar-sales.pdf',
+};
+
 function isMode(value: unknown): value is Mode {
   return value === 'developer' || value === 'sales';
 }
@@ -152,7 +159,7 @@ export default function App() {
         <hr className="max-w-[1440px] mx-auto border-[#E2E8F0]" />
 
         {/* About Section */}
-        <AboutSection content={content.about} onHireClick={scrollToContact} />
+        <AboutSection content={content.about} cvHref={CV_BY_MODE[mode]} onHireClick={scrollToContact} />
 
         {/* Divider */}
         <hr className="max-w-[1440px] mx-auto border-[#E2E8F0]" />

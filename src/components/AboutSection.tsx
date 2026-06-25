@@ -15,10 +15,11 @@ const iconMap: Record<string, LucideIcon> = {
 
 interface AboutSectionProps {
   content: AboutContent;
+  cvHref: string;
   onHireClick: () => void;
 }
 
-export function AboutSection({ content, onHireClick }: AboutSectionProps) {
+export function AboutSection({ content, cvHref, onHireClick }: AboutSectionProps) {
   const { ref, isInView } = useInView({ rootMargin: '-100px' });
 
   return (
@@ -100,7 +101,7 @@ export function AboutSection({ content, onHireClick }: AboutSectionProps) {
                 <ArrowRight className="w-4 h-4" />
               </button>
               <a
-                href="/cv-alfan-januar.pdf"
+                href={cvHref}
                 download
                 className="hover-scale inline-flex items-center justify-center gap-2 bg-white text-[#020817] border border-[#E5E7EB] hover:bg-[#F8FAFC] hover:border-[#64748B] active:bg-[#F1F5F9] text-base font-medium px-6 py-3 rounded-[6px] transition-colors focus:outline-hidden focus:ring-2 focus:ring-[#020817] focus:ring-offset-2"
               >
