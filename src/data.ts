@@ -308,13 +308,13 @@ const salesContent: ModeContent = {
   hero: {
     role: 'Sales & Customer Relations',
     tagline:
-      'I help buyers find the right product through honest, responsive communication. I have served 25+ customers across online marketplaces and bring a retail and tech background to every conversation.',
+      "I help buyers find the right product through honest, responsive communication. I've served 25+ customers across online marketplaces and bring a retail and tech background to every conversation.",
   },
   about: {
     intro:
       'I sell through trust, not pressure. I listen, explain products honestly, and negotiate toward deals that work for both sides. I handle the full cycle myself, from the first message to delivery.',
     secondary:
-      'I have served 25+ customers on Facebook Marketplace and buy-and-sell communities, and spent an internship inside a national retail company (YOGYA Center). I am communicative, target-oriented, and quick to adapt to new environments and SOPs.',
+      "I've served 25+ customers on Facebook Marketplace and buy-and-sell communities, and spent an internship inside a national retail company (YOGYA Center). I'm communicative, target-oriented, and quick to adapt to new environments and SOPs.",
     whatIDo: [
       { icon: 'Users', label: 'Customer service and relationship building' },
       { icon: 'Target', label: 'Price negotiation and closing deals' },
@@ -404,7 +404,7 @@ const salesContent: ModeContent = {
   },
   availability: {
     headline: 'Looking for someone who can sell?',
-    subtext: 'I am open to sales and customer-facing roles. Send a message and I will get back to you within a day.',
+    subtext: "I'm open to sales and customer-facing roles. Send a message and I'll get back to you within a day.",
   },
 };
 
