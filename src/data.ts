@@ -359,14 +359,14 @@ const salesContent: ModeContent = {
         id: 'sales-skills',
         title: 'Core Sales Skills',
         icon: 'Target',
-        description: 'The fundamentals I use to move a deal forward.',
+        description: 'Negotiated and closed 25+ transactions across online marketplaces, consistently reaching deals that worked for both sides.',
         tags: ['Negotiation', 'Closing Deals', 'Product Knowledge', 'Target-Oriented']
       },
       {
         id: 'relationships',
         title: 'Customer Relations',
         icon: 'Users',
-        description: 'Keeping buyers happy so they come back.',
+        description: 'Built repeat-customer relationships through transparent communication and patient complaint handling — earning consistent repeat orders.',
         tags: ['Customer Service', 'Complaint Handling', 'Relationship Building', 'Repeat Customers']
       },
       {
